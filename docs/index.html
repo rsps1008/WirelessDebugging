@@ -1,0 +1,286 @@
+<!doctype html>
+<html lang="zh-Hant">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Wireless Debugging</title>
+  <meta name="description" content="Wireless Debugging 是一款一鍵打開 Android 開發者選項中無線偵錯頁面的 App。">
+  <style>
+    :root {
+      color-scheme: light;
+      --bg: #eef4ff;
+      --bg-2: #f8fbff;
+      --panel: rgba(255, 255, 255, 0.92);
+      --text: #182033;
+      --muted: #5f6a7b;
+      --accent: #2563eb;
+      --accent-2: #14b8a6;
+      --accent-strong: #1741a6;
+      --border: #d7e1ef;
+      --shadow: 0 20px 60px rgba(20, 35, 60, 0.10);
+    }
+
+    * { box-sizing: border-box; }
+    html { scroll-behavior: smooth; }
+    body {
+      margin: 0;
+      font-family: "Segoe UI", "PingFang TC", "Microsoft JhengHei", sans-serif;
+      color: var(--text);
+      line-height: 1.75;
+      background:
+        radial-gradient(circle at top left, rgba(37, 99, 235, 0.14), transparent 28%),
+        radial-gradient(circle at top right, rgba(20, 184, 166, 0.14), transparent 24%),
+        linear-gradient(180deg, var(--bg), var(--bg-2));
+    }
+    main {
+      width: min(1080px, calc(100% - 32px));
+      margin: 0 auto;
+      padding: 32px 0 56px;
+    }
+    .hero, .card {
+      background: var(--panel);
+      border: 1px solid var(--border);
+      box-shadow: var(--shadow);
+      backdrop-filter: blur(10px);
+    }
+    .hero {
+      padding: 34px 32px;
+      border-radius: 28px;
+      margin-bottom: 20px;
+      display: grid;
+      gap: 18px;
+    }
+    .eyebrow {
+      margin: 0;
+      color: var(--accent);
+      font-size: 0.82rem;
+      font-weight: 800;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+    }
+    .title-row {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 12px;
+      align-items: center;
+    }
+    h1 {
+      margin: 0;
+      font-size: clamp(2.2rem, 4.6vw, 4rem);
+      line-height: 1.04;
+      letter-spacing: -0.02em;
+    }
+    .pill {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 8px 14px;
+      border-radius: 999px;
+      border: 1px solid rgba(37, 99, 235, 0.16);
+      background: rgba(37, 99, 235, 0.08);
+      color: var(--accent);
+      font-size: 0.92rem;
+      font-weight: 700;
+      white-space: nowrap;
+    }
+    .lead {
+      max-width: 780px;
+      margin: 0;
+      color: var(--muted);
+      font-size: 1.05rem;
+      line-height: 1.85;
+    }
+    .actions {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 12px;
+      margin-top: 6px;
+    }
+    .button, .button-secondary {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      min-height: 46px;
+      padding: 0 18px;
+      border-radius: 999px;
+      text-decoration: none;
+      font-weight: 800;
+      transition: transform 120ms ease, box-shadow 120ms ease;
+    }
+    .button {
+      color: #fff;
+      background: linear-gradient(135deg, var(--accent), var(--accent-strong));
+      box-shadow: 0 12px 26px rgba(37, 99, 235, 0.24);
+    }
+    .button-secondary {
+      color: var(--accent-strong);
+      background: rgba(37, 99, 235, 0.08);
+      border: 1px solid rgba(37, 99, 235, 0.14);
+    }
+    .button:hover, .button-secondary:hover { transform: translateY(-1px); }
+    .chips {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+    }
+    .chip {
+      display: inline-flex;
+      align-items: center;
+      padding: 7px 12px;
+      border-radius: 999px;
+      border: 1px solid rgba(95, 106, 123, 0.16);
+      background: rgba(255, 255, 255, 0.78);
+      color: var(--muted);
+      font-size: 0.92rem;
+      font-weight: 700;
+    }
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 20px;
+    }
+    .card {
+      padding: 24px;
+      border-radius: 24px;
+    }
+    h2 {
+      margin: 0 0 12px;
+      font-size: 1.18rem;
+      line-height: 1.35;
+    }
+    p { margin: 0; font-size: 1rem; }
+    ul {
+      margin: 0;
+      padding-left: 1.2rem;
+      line-height: 1.9;
+    }
+    li + li { margin-top: 4px; }
+    a {
+      color: var(--accent-strong);
+      text-decoration-thickness: 1.5px;
+      text-underline-offset: 2px;
+      word-break: break-word;
+    }
+    .feature-list {
+      display: grid;
+      gap: 14px;
+      margin-top: 16px;
+    }
+    .feature {
+      padding: 16px 18px;
+      border-radius: 18px;
+      border: 1px solid rgba(95, 106, 123, 0.14);
+      background: rgba(255, 255, 255, 0.72);
+    }
+    .feature strong {
+      display: block;
+      margin-bottom: 6px;
+      color: var(--text);
+    }
+    .feature p {
+      color: var(--muted);
+      font-size: 0.97rem;
+    }
+    .note {
+      margin-top: 16px;
+      padding: 14px 16px;
+      border-left: 4px solid var(--accent-2);
+      border-radius: 12px;
+      background: rgba(20, 184, 166, 0.08);
+      color: var(--muted);
+    }
+    .footer {
+      margin-top: 18px;
+      color: var(--muted);
+      font-size: 0.92rem;
+      text-align: center;
+    }
+    @media (max-width: 760px) {
+      main {
+        width: min(100% - 20px, 720px);
+        padding: 16px 0 32px;
+      }
+      .hero, .card { border-radius: 18px; }
+      .hero { padding: 24px 18px; }
+      .card { padding: 18px; }
+      .grid { grid-template-columns: 1fr; }
+    }
+  </style>
+</head>
+<body>
+  <main>
+    <section class="hero">
+      <p class="eyebrow">Developer Tools</p>
+      <div class="title-row">
+        <h1>Wireless Debugging</h1>
+        <span class="pill">Android App</span>
+      </div>
+      <p class="lead">
+        Wireless Debugging 是一款輕量 App，打開後會直接帶你進入 Android 開發者選項中的無線偵錯頁面。
+        它適合想快速找到配對、除錯與授權入口的人，省去一層層點選設定選單的時間。
+      </p>
+      <div class="actions">
+        <a class="button" href="./privacy-policy/">隱私權政策</a>
+        <a class="button-secondary" href="#features">查看功能</a>
+      </div>
+      <div class="chips" aria-label="features">
+        <span class="chip">一鍵開啟頁面</span>
+        <span class="chip">無線偵錯入口</span>
+        <span class="chip">開發者工具</span>
+        <span class="chip">輕量無廣告</span>
+      </div>
+    </section>
+
+    <section class="grid">
+      <article class="card" id="features">
+        <h2>App 功能</h2>
+        <div class="feature-list">
+          <div class="feature">
+            <strong>直接跳轉無線偵錯</strong>
+            <p>開啟 App 後，會盡量直接前往系統的無線偵錯頁面，減少手動尋找設定的步驟。</p>
+          </div>
+          <div class="feature">
+            <strong>開發者選項入口</strong>
+            <p>若裝置不支援直接頁面，會退回到開發者選項頁，讓你仍然能快速找到相關設定。</p>
+          </div>
+          <div class="feature">
+            <strong>簡單明確</strong>
+            <p>不加多餘流程、不塞複雜功能，目標就是把你帶到正確的 Android 設定頁。</p>
+          </div>
+        </div>
+      </article>
+
+      <article class="card">
+        <h2>適合什麼情境</h2>
+        <ul>
+          <li>要快速開啟 Android 的無線偵錯設定</li>
+          <li>要搭配 adb 或開發流程使用</li>
+          <li>想把常用設定入口做成桌面上的單一捷徑</li>
+          <li>不想每次都進設定選單慢慢找</li>
+        </ul>
+        <div class="note">
+          這個 App 的核心是「捷徑」而不是複雜設定，打開就盡量直接到你要的系統頁面。
+        </div>
+      </article>
+
+      <article class="card">
+        <h2>公開資訊</h2>
+        <ul>
+          <li><a href="./privacy-policy/">隱私權政策</a></li>
+          <li><a href="https://github.com/rsps1008/WirelessDebugging" target="_blank" rel="noreferrer">GitHub Repository</a></li>
+        </ul>
+      </article>
+
+      <article class="card">
+        <h2>頁面用途</h2>
+        <p>
+          這個 `docs` 目錄可用作 GitHub Pages 或其他靜態網站主機。
+          你可以把它當成 App 的介紹首頁，搭配隱私政策頁一起上線。
+        </p>
+      </article>
+    </section>
+
+    <p class="footer">Wireless Debugging - Android shortcut for wireless debugging settings</p>
+  </main>
+</body>
+</html>
